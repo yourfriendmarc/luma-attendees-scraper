@@ -1,5 +1,15 @@
 (async function() {
-  // 1. Collect attendee links and deduplicate by profile URL
+  // 1. Extract event name from the page for the CSV filename
+  const rawTitle = document.title.replace(/\s*[·|–—-]\s*Luma\s*$/i, '').trim();
+  const eventFileName = rawTitle
+    .replace(/[^\w\s-]/g, '')       // remove special chars except hyphens
+    .replace(/\s+/g, '_')           // spaces to underscores
+    .replace(/_+/g, '_')            // collapse multiple underscores
+    .replace(/^_|_$/g, '')          // trim leading/trailing underscores
+    || 'luma_attendees';            // fallback if empty
+  console.log(`Event detected: "${rawTitle}" → filename: ${eventFileName}.csv`);
+
+  // 2. Collect attendee links and deduplicate by profile URL
   const attendeeLinks = Array.from(document.querySelectorAll('a[href^="/user/"]'));
   const seen = new Set();
   const attendees = [];
@@ -72,8 +82,8 @@
   const blob = new Blob([csv], {type: 'text/csv'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'luma_attendees_with_socials.csv';
+  a.download = `${eventFileName}.csv`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-})(); 
+})();
