@@ -25,7 +25,7 @@ This script allows you to extract attendee names, profile URLs, and their social
    - Press Enter to run the script.
 
 7. **Download the CSV**
-   - The script will process each attendee, fetch their social links, and automatically download a CSV file named `luma_attendees_with_socials.csv` when done.
+   - The script will process each attendee, fetch their social links, and automatically download a CSV file named according to the luma event name when done.
 
 ---
 
